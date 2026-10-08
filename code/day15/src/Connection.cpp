@@ -25,8 +25,6 @@
 Connection::Connection(EventLoop *loop, Socket *sock) : loop_(loop), sock_(sock) {
   if (loop_ != nullptr) {
     channel_ = new Channel(loop_, sock_);
-    channel_->EnableRead();
-    channel_->UseET();
   }
   read_buffer_ = new Buffer();
   send_buffer_ = new Buffer();
@@ -176,8 +174,12 @@ void Connection::SetOnConnectCallback(std::function<void(Connection *)> const &c
 
 void Connection::SetOnMessageCallback(std::function<void(Connection *)> const &callback) {
   on_message_callback_ = callback;
-  std::function<void()> bus = std::bind(&Connection::Business, this);
-  channel_->SetReadCallback(bus);
+  if (channel_ != nullptr) {
+    std::function<void()> bus = std::bind(&Connection::Business, this);
+    channel_->SetReadCallback(bus);
+    channel_->EnableRead();
+    channel_->UseET();
+  }
 }
 
 void Connection::GetlineSendBuffer() { send_buffer_->Getline(); }

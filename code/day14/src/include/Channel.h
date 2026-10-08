@@ -11,6 +11,7 @@
 #pragma once
 #include "Macros.h"
 
+#include <cstdint>
 #include <functional>
 
 class Socket;

@@ -10,6 +10,7 @@
  */
 #include "Acceptor.h"
 
+#include <cstdio>
 #include <utility>
 
 #include "Channel.h"

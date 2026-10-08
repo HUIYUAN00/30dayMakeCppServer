@@ -1,6 +1,8 @@
 #include "Connection.h"
 #include "Socket.h"
 #include "Channel.h"
+#include <cerrno>
+#include <cstdio>
 #include <unistd.h>
 #include <string.h>
 #define READ_BUFFER 1024

@@ -3,6 +3,8 @@
 #include "InetAddress.h"
 #include "Channel.h"
 #include "Acceptor.h"
+#include <cerrno>
+#include <cstdio>
 #include <functional>
 #include <string.h>
 #include <unistd.h>

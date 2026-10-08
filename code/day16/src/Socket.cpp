@@ -10,6 +10,8 @@
  */
 #include "Socket.h"
 #include <unistd.h>
+#include <cassert>
+#include <cstring>
 #include <fcntl.h>
 #include <arpa/inet.h>
 #include <sys/ioctl.h>

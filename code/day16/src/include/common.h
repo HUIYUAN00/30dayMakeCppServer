@@ -10,6 +10,9 @@
  */
 #pragma once
 
+#include <cstdio>
+#include <cstdlib>
+
 class TcpServer;
 class EventLoop;
 class Poller;
@@ -47,3 +50,10 @@ enum RC {
   RC_ACCEPTOR_ERROR,
   RC_UNIMPLEMENTED
 };
+
+inline void ErrorIf(bool condition, const char *message) {
+  if (condition) {
+    perror(message);
+    exit(EXIT_FAILURE);
+  }
+}

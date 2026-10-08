@@ -10,6 +10,8 @@
  */
 #include "Connection.h"
 #include <unistd.h>
+#include <cassert>
+#include <cstring>
 #include "Buffer.h"
 #include "Channel.h"
 #include "Socket.h"
@@ -19,8 +21,6 @@ Connection::Connection(int fd, EventLoop *loop) {
   socket_->set_fd(fd);
   if (loop != nullptr) {
     channel_ = std::make_unique<Channel>(fd, loop);
-    channel_->EnableRead();
-    channel_->EnableET();
   }
   read_buf_ = std::make_unique<Buffer>();
   send_buf_ = std::make_unique<Buffer>();
@@ -157,8 +157,12 @@ void Connection::set_delete_connection(std::function<void(int)> const &fn) { del
 
 void Connection::set_on_recv(std::function<void(Connection *)> const &fn) {
   on_recv_ = std::move(fn);
-  std::function<void()> bus = std::bind(&Connection::Business, this);
-  channel_->set_read_callback(bus);
+  if (channel_) {
+    std::function<void()> bus = std::bind(&Connection::Business, this);
+    channel_->set_read_callback(bus);
+    channel_->EnableRead();
+    channel_->EnableET();
+  }
 }
 
 void Connection::Close() { delete_connectioin_(socket_->fd()); }

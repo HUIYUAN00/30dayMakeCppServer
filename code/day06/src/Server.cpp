@@ -2,6 +2,8 @@
 #include "Socket.h"
 #include "InetAddress.h"
 #include "Channel.h"
+#include <cerrno>
+#include <cstdio>
 #include <functional>
 #include <string.h>
 #include <unistd.h>
